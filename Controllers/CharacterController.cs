@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using api_ef.Services.CharacterService;
 using api_ef.Models;
+using api_ef.DTOs.Character;
 
 namespace api_ef.Controllers
 {
@@ -31,13 +32,9 @@ namespace api_ef.Controllers
 
         [HttpPost]
         [Route("AddCharacter")]
-        public async Task<IActionResult> AddCharacter(Character character)
+        public async Task<IActionResult> AddCharacter(AddCharacterDto character)
         {
-            if (character.Id != 0)
-            {
-                return Ok(await this._characterService.AddCharacter(character));
-            }
-            return Ok(new { result = "please provide an ID :)" });
+            return Ok(await this._characterService.AddCharacter(character));
         }
 
     }
