@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using api_ef.Services.CharacterService;
 using api_ef.Models;
@@ -16,25 +17,25 @@ namespace api_ef.Controllers
         }
 
         [HttpGet("GetAll")]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            return Ok(this._characterService.GetAllCharacters());
+            return Ok(await this._characterService.GetAllCharacters());
         }
 
         [HttpGet]
         [Route("GetSingle/{id}")]
-        public IActionResult GetSingle(int id)
+        public async Task<IActionResult> GetSingle(int id)
         {
-            return Ok(this._characterService.GetCharacterById(id));
+            return Ok(await this._characterService.GetCharacterById(id));
         }
 
         [HttpPost]
         [Route("AddCharacter")]
-        public IActionResult AddCharacter(Character character)
+        public async Task<IActionResult> AddCharacter(Character character)
         {
             if (character.Id != 0)
             {
-                return Ok(this._characterService.AddCharacter(character));
+                return Ok(await this._characterService.AddCharacter(character));
             }
             return Ok(new { result = "please provide an ID :)" });
         }
