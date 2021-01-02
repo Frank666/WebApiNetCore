@@ -37,5 +37,19 @@ namespace api_ef.Controllers
             return Ok(await this._characterService.AddCharacter(character));
         }
 
+        [HttpPut]
+        [Route("Update")]
+        public async Task<IActionResult> UpdateCharacter(UpdateCharacterDto updateCharacter)
+        {
+            return Ok(await this._characterService.UpdateCharacter(updateCharacter));
+        }
+
+        [HttpDelete]
+        [Route("Delete/{id}")]
+        public async Task<IActionResult> DeleteCharacter(int id)
+        {
+            return Ok(await this._characterService.DeleteCharacter(id));
+        }
+
     }
 }

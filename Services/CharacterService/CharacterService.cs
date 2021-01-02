@@ -4,6 +4,7 @@ using System.Linq;
 using api_ef.Models;
 using api_ef.DTOs.Character;
 using AutoMapper;
+using System;
 
 namespace api_ef.Services.CharacterService
 {
@@ -42,6 +43,35 @@ namespace api_ef.Services.CharacterService
         {
             ServiceResponse<GetCharacterDto> serviceResponse = new ServiceResponse<GetCharacterDto>();
             serviceResponse.Data = _mapper.Map<GetCharacterDto>(characters.FirstOrDefault(x => x.Id == id));
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<GetCharacterDto>> UpdateCharacter(UpdateCharacterDto updateCharacter)
+        {
+            ServiceResponse<GetCharacterDto> serviceResponse = new ServiceResponse<GetCharacterDto>();
+            Character character = characters.FirstOrDefault(x => x.Id == updateCharacter.Id);
+            character.Name = updateCharacter.Name;
+            character.Defense = updateCharacter.Defense;
+            character.HitPoints = updateCharacter.HitPoints;
+            character.Intelligence = updateCharacter.Intelligence;
+            _mapper.Map(updateCharacter, character);
+            serviceResponse.Data = _mapper.Map<GetCharacterDto>(character);
+            return serviceResponse;
+        }
+        public async Task<ServiceResponse<List<GetCharacterDto>>> DeleteCharacter(int id)
+        {
+            ServiceResponse<List<GetCharacterDto>> serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
+            try
+            {
+                Character character = characters.First(x => x.Id == id);
+                characters.Remove(character);
+                serviceResponse.Data = characters.Select(x => _mapper.Map<GetCharacterDto>(x)).ToList();
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
             return serviceResponse;
         }
     }
